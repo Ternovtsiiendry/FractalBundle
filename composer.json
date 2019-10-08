@@ -13,7 +13,7 @@
     "require": {
         "php": "^7.3",
         "league/fractal": "^0.18",
-        "symfony/symfony": "^3.4|^4.3",
+        "symfony/framework-bundle": "^3.4|^4.3",
         "doctrine/common": "^2.7.1"
     },
     "require-dev": {
