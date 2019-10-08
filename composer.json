@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Dmytrof\\FractalBundle\\": "",
+            "Dmytrof\\FractalBundle\\": ""
         },
         "exclude-from-classmap": [
             "Tests/"
