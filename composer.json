@@ -28,10 +28,5 @@
     "suggest": {
         "league/fractal": "Allows more advanced using of Fractal",
         "friendsofsymfony/rest-bundle": "Adds support for using Fractal with FOSRestBundle"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.x"
-        }
     }
 }
