@@ -11,10 +11,7 @@
 
 namespace Dmytrof\FractalBundle\Service;
 
-use Dmytrof\FractalBundle\Exception\TransformerException;
-use Dmytrof\FractalBundle\Transformer\{
-    AbstractTransformer, Extension\ExtensionInterface
-};
+use Dmytrof\FractalBundle\{Exception\TransformerException, Transformer\AbstractTransformer};
 use Doctrine\Common\Collections\{ArrayCollection, Collection};
 
 class TransformersContainer implements \IteratorAggregate, \Countable
