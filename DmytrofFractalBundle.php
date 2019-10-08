@@ -11,7 +11,7 @@
 
 namespace Dmytrof\FractalBundle;
 
-use DFStudio\FractalBundle\DependencyInjection\Compiler\FOSRestPass;
+use Dmytrof\FractalBundle\DependencyInjection\Compiler\FOSRestPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
