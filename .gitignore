@@ -1,16 +1,4 @@
 /vendor/
 /phpunit.xml
 /composer.phar
-.idea/$CACHE_FILE$
-.idea/$PRODUCT_WORKSPACE_FILE$
-.idea/.gitignore
-.idea/FractalBundle.iml
-.idea/codeStyles/
-.idea/deployment.xml
-.idea/encodings.xml
-.idea/jsLibraryMappings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/php.xml
-.idea/vagrant.xml
-.idea/vcs.xml
+.idea/
