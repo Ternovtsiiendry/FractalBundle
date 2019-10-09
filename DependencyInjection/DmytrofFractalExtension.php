@@ -12,11 +12,8 @@
 namespace Dmytrof\FractalBundle\DependencyInjection;
 
 use Dmytrof\FractalBundle\Transformer\{AbstractTransformer, Extension\ExtensionInterface};
-use Symfony\Component\DependencyInjection\{
-    ContainerBuilder, Loader
-};
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\{ContainerBuilder, Loader};
+use Symfony\Component\{Config\FileLocator, HttpKernel\DependencyInjection\Extension};
 
 class DmytrofFractalExtension extends Extension
 {
@@ -25,9 +22,6 @@ class DmytrofFractalExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
@@ -35,6 +29,6 @@ class DmytrofFractalExtension extends Extension
             ->addTag('dmytrof.fractal.transformer');
 
         $container->registerForAutoconfiguration(ExtensionInterface::class)
-            ->addTag('ddmytrof.fractal.transformer.extension');
+            ->addTag('dmytrof.fractal.transformer.extension');
     }
 }
