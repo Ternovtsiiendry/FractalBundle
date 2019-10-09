@@ -11,25 +11,12 @@
 
 namespace Dmytrof\FractalBundle\Service;
 
+use Dmytrof\FractalBundle\Exception\RuntimeException;
 use Dmytrof\FractalBundle\Scope\Scope;
 use League\Fractal\{Manager, Resource\ResourceInterface, ScopeFactory as BaseScopeFactory};
 
 class ScopeFactory extends BaseScopeFactory
 {
-    /**
-     * @var TransformersContainer
-     */
-    protected $transformersContainer;
-
-    /**
-     * ScopeFactory constructor.
-     * @param TransformersContainer $transformersContainer
-     */
-    public function __construct(TransformersContainer $transformersContainer)
-    {
-        $this->transformersContainer = $transformersContainer;
-    }
-
     /**
      * @param Manager $manager
      * @param ResourceInterface $resource
@@ -38,6 +25,9 @@ class ScopeFactory extends BaseScopeFactory
      */
     public function createScopeFor(Manager $manager, ResourceInterface $resource, $scopeIdentifier = null)
     {
-        return new Scope($manager, $resource, $scopeIdentifier, $this->transformersContainer);
+        if (!$manager instanceof FractalManager) {
+            throw new RuntimeException(sprintf('Manager must be instance of %s. Input vas: %s', FractalManager::class, get_class($manager)));
+        }
+        return new Scope($manager, $resource, $scopeIdentifier);
     }
 }

@@ -11,36 +11,29 @@
 
 namespace Dmytrof\FractalBundle\Scope;
 
-use Dmytrof\FractalBundle\Service\TransformersContainer;
-use Dmytrof\FractalBundle\Transformer\AbstractTransformer;
-use League\Fractal\{Manager, Resource\ResourceInterface, Scope as BaseScope, TransformerAbstract};
+use Dmytrof\FractalBundle\{Exception\TransformerException, Service\FractalManager, Transformer\AbstractTransformer};
+use League\Fractal\{Resource\ResourceInterface, Scope as BaseScope, TransformerAbstract};
 
 class Scope extends BaseScope
 {
     /**
-     * @var TransformersContainer
-     */
-    protected $transformersContainer;
-
-    /**
      * Scope constructor.
-     * @param Manager $manager
+     * @param FractalManager $manager
      * @param ResourceInterface $resource
      * @param string|null $scopeIdentifier
-     * @param TransformersContainer|null $transformersContainer
      */
-    public function __construct(Manager $manager, ResourceInterface $resource, ?string $scopeIdentifier = null, ?TransformersContainer $transformersContainer = null)
+    public function __construct(FractalManager $manager, ResourceInterface $resource, ?string $scopeIdentifier = null)
     {
         parent::__construct($manager, $resource, $scopeIdentifier);
-        $this->transformersContainer = $transformersContainer;
     }
 
     /**
-     * @return TransformersContainer
+     * Returns manager
+     * @return FractalManager
      */
-    protected function getTransformersContainer(): ?TransformersContainer
+    public function getManager(): FractalManager
     {
-        return $this->transformersContainer;
+        return parent::getManager();
     }
 
     /**
@@ -54,7 +47,7 @@ class Scope extends BaseScope
             return [[],[]];
         }
         if (is_string($transformer)) {
-            $transformer = $this->getTransformerService($transformer);
+            $transformer = $this->getTransformer($transformer);
         }
         list($transformedData, $includedData) = parent::fireTransformer($transformer, $data);
         if ($transformer instanceof AbstractTransformer && $transformer->getIncludesToRoot()) {
@@ -69,14 +62,15 @@ class Scope extends BaseScope
 
     /**
      * Returns transformer service
-     * @param string $transformer
+     * @param string $transformerClass
      * @return AbstractTransformer|null
      */
-    protected function getTransformerService(string $transformer): ?AbstractTransformer
+    protected function getTransformer(string $transformerClass): ?AbstractTransformer
     {
-        if ($this->getTransformersContainer() && $this->getTransformersContainer()->has($transformer)) {
-            return $this->getTransformersContainer()->get($transformer);
+        try {
+            return $this->getManager()->getTransformer($transformerClass);
+        } catch (TransformerException $e) {
+            return null;
         }
-        return null;
     }
 }
