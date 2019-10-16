@@ -29,9 +29,9 @@ class FractalManager extends BaseManager
     /**
      * FractalManager constructor.
      * @param TransformersContainer $transformersContainer
-     * @param ScopeFactoryInterface|null $scopeFactory
+     * @param ScopeFactory|null $scopeFactory
      */
-    public function __construct(TransformersContainer $transformersContainer, ScopeFactoryInterface $scopeFactory = null)
+    public function __construct(TransformersContainer $transformersContainer, ScopeFactory $scopeFactory)
     {
         parent::__construct($scopeFactory);
         $this->setSerializer(new SimpleArraySerializer());

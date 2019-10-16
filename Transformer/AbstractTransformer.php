@@ -268,7 +268,7 @@ abstract class AbstractTransformer extends TransformerAbstract
      */
     public function hasIncludeToRoot(string $include): bool
     {
-        return isset($this->getIncludesToRoot()[$include]);
+        return in_array($include, $this->getIncludesToRoot());
     }
 
     /**
