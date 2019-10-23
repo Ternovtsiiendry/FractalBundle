@@ -11,14 +11,14 @@
 
 namespace Dmytrof\FractalBundle\Tests\Service;
 
-use Dmytrof\FractalBundle\Transformer\Extension\AbstractExtension;
+use Dmytrof\FractalBundle\Tests\Data\TestDataExtension;
 use Dmytrof\FractalBundle\Service\ExtensionsContainer;
 use PHPUnit\Framework\TestCase;
 
 class ExtensionsContainerTest extends TestCase
 {
     /**
-     * @var TestTransformer
+     * @var TestDataExtension
      */
     protected $testExtension;
 
@@ -26,7 +26,7 @@ class ExtensionsContainerTest extends TestCase
     {
         parent::setUp();
 
-        $this->testExtension = new TestExtension();
+        $this->testExtension = new TestDataExtension();
     }
 
     public function testCreateContainer()
@@ -50,9 +50,4 @@ class ExtensionsContainerTest extends TestCase
         $this->expectException(\Error::class);
         $container->addExtension(new \StdClass());
     }
-}
-
-class TestExtension extends AbstractExtension
-{
-
 }

@@ -11,14 +11,15 @@
 
 namespace Dmytrof\FractalBundle\Tests\Service;
 
-use Dmytrof\FractalBundle\{Exception\TransformerException, Transformer\AbstractTransformer};
+use Dmytrof\FractalBundle\{Exception\TransformerException,
+    Tests\Data\FooTransformer};
 use Dmytrof\FractalBundle\Service\{ExtensionsContainer, TransformersContainer};
 use PHPUnit\Framework\TestCase;
 
 class TransformersContainerTest extends TestCase
 {
     /**
-     * @var TestTransformer
+     * @var FooTransformer
      */
     protected $testTransformer;
 
@@ -27,7 +28,7 @@ class TransformersContainerTest extends TestCase
         parent::setUp();
 
         $extensionsContainer = $this->createMock(ExtensionsContainer::class);
-        $this->testTransformer = new TestTransformer($extensionsContainer);
+        $this->testTransformer = new FooTransformer($extensionsContainer);
     }
 
     public function testCreateContainer()
@@ -54,19 +55,11 @@ class TransformersContainerTest extends TestCase
         $this->assertCount(1, $container);
         $this->assertSame(1, $container->count());
 
-        $this->assertTrue($container->has(TestTransformer::class));
+        $this->assertTrue($container->has(FooTransformer::class));
         $this->assertFalse($container->has('SomeClass'));
 
-        $this->assertSame($this->testTransformer, $container->get(TestTransformer::class));
+        $this->assertSame($this->testTransformer, $container->get(FooTransformer::class));
         $this->expectException(TransformerException::class);
         $container->get('SomeClass');
-    }
-}
-
-class TestTransformer extends AbstractTransformer
-{
-    public function transformSubject($subject): array
-    {
-        return [];
     }
 }

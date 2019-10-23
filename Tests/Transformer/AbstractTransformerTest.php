@@ -11,15 +11,14 @@
 
 namespace Dmytrof\FractalBundle\Tests\Transformer;
 
-use Dmytrof\FractalBundle\Transformer\{AbstractTransformer, Extension\AbstractExtension};
-use Dmytrof\FractalBundle\Service\{FractalManager, ScopeFactory, TransformersContainer, ExtensionsContainer};
-use League\Fractal\Resource\{Primitive, ResourceInterface};
+use Dmytrof\FractalBundle\Tests\Data\{Foo, FooTransformer, TestDataExtension, TestExtension};
+use Dmytrof\FractalBundle\Service\ExtensionsContainer;
 use PHPUnit\Framework\TestCase;
 
 class AbstractTransformerTest extends TestCase
 {
     /**
-     * @var AbstractTransformer
+     * @var FooTransformer
      */
     protected $transformer;
 
@@ -37,7 +36,7 @@ class AbstractTransformerTest extends TestCase
         $this->assertCount(1, $this->transformer->getExtensions());
         $this->assertEquals(Foo::class, $this->transformer->getSubjectClass());
 
-        $this->assertCount(1, $this->transformer->getAvailableIncludes());
+        $this->assertCount(2, $this->transformer->getAvailableIncludes());
         $this->assertCount(1, $this->transformer->getDefaultIncludes());
     }
 
@@ -45,24 +44,25 @@ class AbstractTransformerTest extends TestCase
     {
         $foo = new Foo();
         $foo->bar = 'baz';
+        $foo->baz = 'jazz';
 
         $this->assertTrue($this->transformer->supports($foo));
         $this->assertFalse($this->transformer->supports(new \StdClass()));
 
         $this->assertEquals([
             'bar' => 'baz',
-
+            'baz' => 'jazz',
         ], $this->transformer->transform($foo));
     }
 
     public function testAvailableIncludes()
     {
         $this->transformer->addAvailableInclude('bar', 'baz');
-        $this->assertCount(3, $this->transformer->getAvailableIncludes());
-        $this->assertEquals([TestDataExtension::TEST_DATA_INCLUDE, 'bar', 'baz'], $this->transformer->getAvailableIncludes());
+        $this->assertCount(4, $this->transformer->getAvailableIncludes());
+        $this->assertEquals(['boo', TestDataExtension::TEST_DATA_INCLUDE, 'bar', 'baz'], $this->transformer->getAvailableIncludes());
 
         $this->transformer->removeAvailableInclude('baz', 'bar');
-        $this->assertEquals([TestDataExtension::TEST_DATA_INCLUDE], $this->transformer->getAvailableIncludes());
+        $this->assertEquals(['boo', TestDataExtension::TEST_DATA_INCLUDE], $this->transformer->getAvailableIncludes());
 
         $includes = ['foo', 'bar', 'baz'];
         $this->assertEquals($includes, $this->transformer->setAvailableIncludes($includes)->getAvailableIncludes());
@@ -122,61 +122,5 @@ class AbstractTransformerTest extends TestCase
         $dateTime = new \DateTime();
         $this->assertIsString($this->transformer->transformDateTime($dateTime));
         $this->assertNull($this->transformer->transformDateTime(null));
-    }
-}
-
-interface TestDataInterface
-{
-    public function getTestData(): array;
-}
-
-class Foo implements TestDataInterface
-{
-    public $bar;
-
-    public function getTestData(): array
-    {
-        return [
-            'hello' => 'world',
-        ];
-    }
-}
-
-class TestDataExtension extends AbstractExtension
-{
-    public const TEST_DATA_INCLUDE = 'testData';
-
-    protected function _supports(\ReflectionClass $reflectionClass, AbstractTransformer $transformer): bool
-    {
-        return $reflectionClass->implementsInterface(TestDataInterface::class);
-    }
-
-    public function decorateTransformer(AbstractTransformer $transformer): void
-    {
-        $transformer
-            ->addAvailableInclude(self::TEST_DATA_INCLUDE)
-            ->addDefaultInclude(self::TEST_DATA_INCLUDE)
-            ->setIncludeCall(self::TEST_DATA_INCLUDE, [$this, 'includeTestData'])
-        ;
-    }
-
-    public function includeTestData(TestDataInterface $subject, AbstractTransformer $transformer): ResourceInterface
-    {
-        return new Primitive($subject->getTestData());
-    }
-}
-class TestExtension extends AbstractExtension
-{
-}
-
-class FooTransformer extends AbstractTransformer
-{
-    protected const SUBJECT_CLASS = Foo::class;
-
-    public function transformSubject($subject): array
-    {
-        return [
-            'bar' => $subject->bar,
-        ];
     }
 }
