@@ -25,8 +25,16 @@
             "Dmytrof\\FractalBundle\\": ""
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Dmytrof\\FractalBundle\\Tests\\": "tests/"
+        }
+    },
     "suggest": {
         "league/fractal": "Allows more advanced using of Fractal",
         "friendsofsymfony/rest-bundle": "Adds support for using Fractal with FOSRestBundle"
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }
