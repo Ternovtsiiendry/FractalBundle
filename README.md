@@ -1,7 +1,7 @@
 DmytrofFractalBundle
 ====================
 
-This bundle helps you to implement [Fractal](https://fractal.thephpleague.com) into 
+This bundle helps you to implement [Fractal by League](https://fractal.thephpleague.com) into 
 your Symfony 3/4 application
 
 ## Installation
