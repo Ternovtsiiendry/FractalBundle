@@ -315,3 +315,41 @@ and ArticleTransformer:
             return $this->primitive($article->getBody());
         }
     }
+    
+    
+##### Update controller
+
+    <?php
+    
+    namespace App\Controller\Api\v1;
+    
+    use App\Model\Article;
+    use App\FractalTransformer\ArticleTransformer;
+    use Dmytrof\FractalBundle\Service\FractalManager;
+    use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+    use Symfony\Component\Routing\Annotation\Route;
+    use Symfony\Component\HttpFoundation\{Request, JsonResponse};
+    
+    /**
+     * @Route("/api/v2/articles")
+     */
+    class ArticleController extends AbstractController
+    {
+        /**
+         * @Route("/{id<\d+>}", methods={"GET"})
+         */
+        public function getOne(int $id, Request $request, FractalManager $fractalManager)
+        {
+            $model = $this->getArticeById($id); // Some method to receive model
+            
+            $fractalManager
+                ->parseIncludes($request->get('include', ''))
+                ->parseExcludes($request->get('exclude', ''))
+                ->parseFieldsets($request->get('fieldsets', []))
+            ;
+    
+            return new JsonResponse([
+                'data' => $fractalManager->getModelData($model, ArticleTransformer::class),
+            ], JsonResponse::HTTP_OK);
+        }
+    }
