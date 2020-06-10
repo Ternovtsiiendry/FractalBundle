@@ -293,11 +293,11 @@ abstract class AbstractTransformer extends TransformerAbstract
 
     /**
      * Transforms data
-     * @param \DateTime|null $dateTime
+     * @param \DateTimeInterface|null $dateTime
      * @param string $format
      * @return string|null
      */
-    public function transformDateTime(?\DateTime $dateTime, string $format = \DateTime::ATOM): ?string
+    public function transformDateTime(?\DateTimeInterface $dateTime, string $format = \DateTimeInterface::ATOM): ?string
     {
         return $dateTime ? $dateTime->format($format) : null;
     }
