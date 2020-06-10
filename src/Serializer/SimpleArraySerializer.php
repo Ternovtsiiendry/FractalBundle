@@ -30,4 +30,30 @@ class SimpleArraySerializer extends BaseArraySerializer
         }
         return $data;
     }
+
+    /**
+     * Serialize an item.
+     *
+     * @param string $resourceKey
+     * @param array  $data
+     *
+     * @return array|null
+     */
+    public function item($resourceKey, array $data)
+    {
+        if (!$data) {
+            return null;
+        }
+        return $data;
+    }
+
+    /**
+     * Serialize null resource.
+     *
+     * @return null
+     */
+    public function null()
+    {
+        return null;
+    }
 }
