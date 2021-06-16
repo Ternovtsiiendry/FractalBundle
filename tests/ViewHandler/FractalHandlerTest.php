@@ -14,14 +14,14 @@ namespace Dmytrof\FractalBundle\Tests\ViewHandler;
 use Dmytrof\FractalBundle\ViewHandler\FractalHandler;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use FOS\RestBundle\Context\Context;
-use FOS\RestBundle\View\{View, ViewHandler};
+use FOS\RestBundle\View\{View, ViewHandlerInterface};
 use PHPUnit\Framework\TestCase;
 
 class FractalHandlerTest extends TestCase
 {
     public function testHandler()
     {
-        $viewHandler = $this->createMock(ViewHandler::class);
+        $viewHandler = $this->createMock(ViewHandlerInterface::class);
         $viewHandler->method('createResponse')->willReturn(new Response());
         $request = $this->createMock(Request::class);
         $format = 'json';

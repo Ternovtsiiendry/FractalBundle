@@ -12,14 +12,14 @@
 namespace Dmytrof\FractalBundle\ViewHandler;
 
 use Dmytrof\FractalBundle\Service\FractalManager;
-use FOS\RestBundle\View\{View, ViewHandler};
+use FOS\RestBundle\View\{View, ViewHandlerInterface};
 use Symfony\Component\HttpFoundation\{Request, Response};
 
 class FractalHandler
 {
     public const ATTRIBUTE = FractalManager::CODE;
 
-    public function __invoke(ViewHandler $viewHandler, View $view, Request $request, $format)
+    public function __invoke(ViewHandlerInterface $viewHandler, View $view, Request $request, $format)
     {
        if ($view->getContext()->getAttribute(static::ATTRIBUTE)) {
 
