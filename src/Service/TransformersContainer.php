@@ -56,7 +56,13 @@ class TransformersContainer implements \IteratorAggregate, \Countable
      */
     public function addTransformer(AbstractTransformer $transformer): self
     {
-        $this->transformers->set(get_class($transformer), $transformer);
+        if ($transformer instanceof ExtendableTransformerInterface) {
+            $key = $transformer->getExtendedClass();
+        } else {
+            $key = get_class($transformer);
+        }
+        $this->transformers->set($key, $transformer);
+
         return $this;
     }
 
